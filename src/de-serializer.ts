@@ -1,3 +1,4 @@
-export {SimpleSerialize} from './Serialize'
-export {SimpleDeserialize} from './Deserialize'
-export {SimpleDeserializer} from './Deserializer'
+export {Serializable} from './Serializable'
+export {Deserialize, SimpleDeserialize} from './Deserialize'
+export {Deserializer, SimpleDeserializer} from './Deserializer'
+

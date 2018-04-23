@@ -1,5 +1,5 @@
-import Deserializer from '../src/Deserializer'
-import { SimpleSerialize } from '../src/Serialize'
+import {Deserializer} from '../src/Deserializer'
+import {SimpleSerialize} from '../src/Serialize'
 
 class NestedTestClass {
    private test: string = 'defaultNested'
@@ -43,13 +43,13 @@ describe('deserialize test', () => {
 
    it('with simple object', () => {
       let serialized = SimpleSerialize(new TestClass('test', 'nested'))
-      let deserialized = Deserializer.simple(TestClass).do(serialized) as TestClass
+      let deserialized = Deserializer.simple(TestClass).deserialize(serialized) as TestClass
       expect(deserialized.testFunction()).toEqual('test|nested')
    })
 
    it('with object with deserialize', () => {
       let serialized = SimpleSerialize(new ObjectWithDeserialize('testValue'))
-      let deserialized = Deserializer.simple(TestClass).do(serialized) as ObjectWithDeserialize
+      let deserialized = Deserializer.simple(ObjectWithDeserialize).deserialize(serialized) as ObjectWithDeserialize
       expect(deserialized.value).toEqual('overwritten')
    })
 })

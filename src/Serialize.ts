@@ -1,6 +1,6 @@
 import { isPrimitive } from 'util'
 
-export default interface Serialize {
+export interface Serialize {
    (element: any): any
 }
 
