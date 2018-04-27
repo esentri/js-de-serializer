@@ -8,6 +8,8 @@ _De-Serializer_ will support you in various serializing and deserializing tasks 
 Currently, the following features are implemented:
 * serialize **JS object to data structure**
 * deserialize **data structure to JS object**
+* serialize **JS object to string**
+* deserialize **string to JS object**
 
 The basic idea is that you can truly deserialize data to a fully working object. If you use
 `JSON.stringify` / `JSON.parse` for example you only get a data structure (i.e. an object with
@@ -37,6 +39,19 @@ let dataStructure = SimpleSerialize(myObject)
 ```
 * _myObject_ is the object you want to serialize
 
+
+### JS object to string
+
+**Functional:** 
+```
+import {SimpleSerialize, SerializedType} from '@esentri/de-serializer'
+
+let myObject = new MyObject()
+let string = SimpleSerialize(myObject, SerializedType.STRING)
+```
+* _myObject_ is the object you want to serialize
+
+
 ### Data structure to JS object
 
 **Functional:** 
@@ -57,6 +72,29 @@ let myDeserializer = Deserializer.simple(MyObject)
 let myObject = myDeserializer.deserialize(myDataStructure)
 ```
 * _myDataStructure_ is the data structure for deserializing
+* _MyObject_ is the class you want to create
+
+
+### String to JS object
+
+**Functional:** 
+```
+import {SimpleDeserialize, SerializedType} from '@esentri/de-serializer'
+
+let myString = "{ field1: 'test' }"
+let obj = SimpleDeserialize(myString, MyObject, SerializedType.STRING)
+```
+* _myString_ is the string for deserializing
+* _MyObject_ is the class you want to create
+
+**Object oriented:**
+```
+import {Deserializer, SerializedType} from '@esentri/de-serializer'
+
+let myDeserializer = Deserializer.simple(MyObject, SerializedType.STRING)
+let myObject = myDeserializer.deserialize(myString)
+```
+* _myString_ is the data structure for deserializing
 * _MyObject_ is the class you want to create
 
 ### Custom de/serializing
