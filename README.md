@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/esentri/js-de-serializer.svg?branch=master)](https://travis-ci.org/esentri/js-de-serializer)
 [![Coverage Status](https://coveralls.io/repos/github/esentri/js-de-serializer/badge.svg?branch=master)](https://coveralls.io/github/esentri/js-de-serializer?branch=master)
+[![npm version](https://badge.fury.io/js/%40esentri%2Fde-serializer.svg)](https://badge.fury.io/js/%40esentri%2Fde-serializer)
 
 _De-Serializer_ will support you in various serializing and deserializing tasks in JavaScript.
 
