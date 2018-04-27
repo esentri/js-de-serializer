@@ -11,6 +11,8 @@ Currently, the following features are implemented:
 * deserialize **data structure to JS object**
 * serialize **JS object to string**
 * deserialize **string to JS object**
+* serialize **JS object to ArrayBuffer**
+* deserialize **ArrayBuffer to JS object**
 
 The basic idea is that you can truly deserialize data to a fully working object. If you use
 `JSON.stringify` / `JSON.parse` for example you only get a data structure (i.e. an object with
