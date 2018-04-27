@@ -71,4 +71,12 @@ describe('deserialize test', () => {
          ObjectWithDeserialize, SerializedType.STRING) as ObjectWithDeserialize
       expect(deserialized.value).toBe('overwritten')
    })
+
+   it('deserialize simple object from ArrayBuffer', () => {
+      let testClass = new TestClass('hello', 'world')
+      let serialized = SimpleSerialize(testClass, SerializedType.ARRAY_BUFFER)
+      let deserialized =
+         SimpleDeserialize(serialized, TestClass, SerializedType.ARRAY_BUFFER) as TestClass
+      expect(deserialized.testFunction()).toBe('hello|world')
+   })
 })
