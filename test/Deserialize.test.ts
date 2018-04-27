@@ -1,14 +1,15 @@
-import { SimpleDeserialize } from '../src/Deserialize'
-import { SimpleSerialize } from '../src/Serialize'
+import {SimpleDeserialize} from '../src/Deserialize'
+import {SimpleSerialize} from '../src/Serialize'
+import {SerializedType} from '../src/SerializedType'
 
 class NestedTestClass {
    private test: string = 'defaultNested'
 
-   constructor(test: string) {
+   constructor (test: string) {
       this.test = test
    }
 
-   public testFunction(): string {
+   public testFunction (): string {
       return this.test
    }
 }
@@ -17,12 +18,12 @@ class TestClass {
    private test: string = 'default'
    private nestedTestClass: NestedTestClass
 
-   constructor(test: string, testNested: string) {
+   constructor (test: string, testNested: string) {
       this.test = test
       this.nestedTestClass = new NestedTestClass(testNested)
    }
 
-   public testFunction(): string {
+   public testFunction (): string {
       return this.test + '|' + this.nestedTestClass.testFunction()
    }
 }
@@ -30,11 +31,11 @@ class TestClass {
 class ObjectWithDeserialize {
    public value: string
 
-   constructor(value: string) {
+   constructor (value: string) {
       this.value = value
    }
 
-   static deserialize(dataStructure: any) {
+   static deserialize (dataStructure: any) {
       return new ObjectWithDeserialize('overwritten')
    }
 }
@@ -53,5 +54,21 @@ describe('deserialize test', () => {
          ObjectWithDeserialize
       ) as ObjectWithDeserialize
       expect(deserialized.value).toEqual('overwritten')
+   })
+
+   it('deserialize simple object from string', () => {
+      let testClass = new TestClass('hello', 'world')
+      let serialized = SimpleSerialize(testClass, SerializedType.STRING)
+      let deserialized =
+         SimpleDeserialize(serialized, TestClass, SerializedType.STRING) as TestClass
+      expect(deserialized.testFunction()).toBe('hello|world')
+   })
+
+   it('deserialize object with deserialize from string', () => {
+      let testObject = new ObjectWithDeserialize('hello')
+      let serialized = SimpleSerialize(testObject, SerializedType.STRING)
+      let deserialized = SimpleDeserialize(serialized,
+         ObjectWithDeserialize, SerializedType.STRING) as ObjectWithDeserialize
+      expect(deserialized.value).toBe('overwritten')
    })
 })
