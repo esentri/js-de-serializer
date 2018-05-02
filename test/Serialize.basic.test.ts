@@ -84,4 +84,11 @@ describe('serialize test', () => {
       expect(typeof serialized).toEqual('string')
       expect(serialized).toEqual(JSON.stringify(testClass))
    })
+
+   it('string to ArrayBuffer', () => {
+      const testString = 'hello world'
+      const serialized = SimpleSerialize(testString, SerializedType.ARRAY_BUFFER)
+      expect(typeof serialized).not.toBe('string')
+      expect(typeof serialized).not.toBe('String')
+   })
 })
