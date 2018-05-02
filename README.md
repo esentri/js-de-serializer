@@ -184,6 +184,10 @@ you get by repeating this algorithm for the property
 * [Typescript Library Starter](https://github.com/alexjoverm/typescript-library-starter)
   * License: MIT
   * as a template for the setup
+
+<details>
+   <summary>Typescript Library Starter dependencies</summary>
+
   * [JEST](https://facebook.github.io/jest/)
     * License: MIT
   * [Colors](https://github.com/Marak/colors.js)
@@ -222,6 +226,7 @@ you get by repeating this algorithm for the property
     * License: Apache-2.0 
   * [validate-commit-msg](https://github.com/conventional-changelog/validate-commit-msg)
     * License: MIT
+</details>
 
 
 # License
