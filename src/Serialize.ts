@@ -1,8 +1,7 @@
 import {isPrimitive} from 'util'
 import {SerializedType} from './SerializedType'
 import DeSerializeParameter from './DeSerializeParameter'
-import {MethodStringToLambdaString} from './transformer/MethodLambdaString'
-import {MethodStringToFunctionString, MethodToFunctionString} from './transformer/MethodFunctionString'
+import {MethodStringToFunctionString} from './transformer/MethodFunctionString'
 
 export interface Serialize {
    (element: any,
