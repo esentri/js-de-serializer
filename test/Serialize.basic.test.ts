@@ -93,4 +93,5 @@ describe('serialize test', () => {
       expect(typeof serialized).not.toBe('string')
       expect(typeof serialized).not.toBe('String')
    })
+
 })

@@ -96,4 +96,13 @@ describe('deserialize test', () => {
       expect(deserialized['nestedTestClass']['field']).toBe('hello world')
       expect(deserialized.getField()).toBe('hello world')
    })
+
+   it('deserialize number from ArrayBuffer', () => {
+      const num = 12345678
+      const serialized = SimpleSerialize(num, [DeSerializeParameter.WITHOUT_FUNCTIONS],
+         SerializedType.ARRAY_BUFFER)
+      const deserialized = SimpleDeserialize(serialized, {}, SerializedType.ARRAY_BUFFER)
+      expect(deserialized).toEqual(num)
+   })
+
 })
