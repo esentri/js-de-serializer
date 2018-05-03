@@ -179,6 +179,13 @@ you get by repeating this algorithm for the property
       2. **false:** call this algorithm on the property and assign the value to the new created object
 1. return new created object
 
+# Limitations
+
+Currently, the methods will be serialized for nested objects as well inside an attribute called
+**\_\_functions\_\_**. If you send a serialized objects across the wire you need to keep in mind 
+to skip this field if you deserialize the object with another library / language.
+
+
 # Projects used
 
 * [Typescript Library Starter](https://github.com/alexjoverm/typescript-library-starter)

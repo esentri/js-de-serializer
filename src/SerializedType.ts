@@ -2,7 +2,7 @@ import {arrayBufferToString, stringToArrayBuffer} from './transformer/ArrayBuffe
 
 export class SerializedType<TYPE> {
    public static readonly DATA_STRUCTURE: SerializedType<object> =
-      new SerializedType('data_structure',
+      new SerializedType('standard',
          (dataStructure: any) => dataStructure,
          (obj: object) => obj)
    public static readonly STRING: SerializedType<string> =
@@ -20,11 +20,11 @@ export class SerializedType<TYPE> {
    private readonly identifier: string
 
    constructor (identifier: string,
-                finalSerialize: (dataStructuer: object) => TYPE,
-                toDataStrucuture: (obj: TYPE) => any) {
+                finalSerialize: (dataStructure: object) => TYPE,
+                toDataStructure: (obj: TYPE) => any) {
       this.identifier = identifier
       this.finalSerialize = finalSerialize
-      this.toDataStructure = toDataStrucuture
+      this.toDataStructure = toDataStructure
    }
 
 }

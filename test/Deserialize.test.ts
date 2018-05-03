@@ -1,6 +1,8 @@
 import {SimpleDeserialize} from '../src/Deserialize'
 import {SimpleSerialize} from '../src/Serialize'
 import {SerializedType} from '../src/SerializedType'
+import {SimpleNestedTestClass, SimpleTestClassNested} from './testClasses/SimpleTestClassNested'
+import DeSerializeParameter from '../src/DeSerializeParameter'
 
 class NestedTestClass {
    private test: string = 'defaultNested'
@@ -42,13 +44,15 @@ class ObjectWithDeserialize {
 
 describe('deserialize test', () => {
    it('with simple object', () => {
-      let serialized = SimpleSerialize(new TestClass('test', 'nested'))
+      let serialized = SimpleSerialize(new TestClass('test', 'nested'),
+         [DeSerializeParameter.WITHOUT_FUNCTIONS])
       let deserialized = SimpleDeserialize(serialized, TestClass) as TestClass
       expect(deserialized.testFunction()).toEqual('test|nested')
    })
 
    it('with object with deserialize', () => {
-      let serialized = SimpleSerialize(new ObjectWithDeserialize('testValue'))
+      let serialized = SimpleSerialize(new ObjectWithDeserialize('testValue'),
+         [DeSerializeParameter.WITHOUT_FUNCTIONS])
       let deserialized = SimpleDeserialize(
          serialized,
          ObjectWithDeserialize
@@ -58,7 +62,8 @@ describe('deserialize test', () => {
 
    it('deserialize simple object from string', () => {
       let testClass = new TestClass('hello', 'world')
-      let serialized = SimpleSerialize(testClass, SerializedType.STRING)
+      let serialized = SimpleSerialize(testClass,
+         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
       let deserialized =
          SimpleDeserialize(serialized, TestClass, SerializedType.STRING) as TestClass
       expect(deserialized.testFunction()).toBe('hello|world')
@@ -66,7 +71,8 @@ describe('deserialize test', () => {
 
    it('deserialize object with deserialize from string', () => {
       let testObject = new ObjectWithDeserialize('hello')
-      let serialized = SimpleSerialize(testObject, SerializedType.STRING)
+      let serialized = SimpleSerialize(testObject,
+         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
       let deserialized = SimpleDeserialize(serialized,
          ObjectWithDeserialize, SerializedType.STRING) as ObjectWithDeserialize
       expect(deserialized.value).toBe('overwritten')
@@ -74,9 +80,20 @@ describe('deserialize test', () => {
 
    it('deserialize simple object from ArrayBuffer', () => {
       let testClass = new TestClass('hello', 'world')
-      let serialized = SimpleSerialize(testClass, SerializedType.ARRAY_BUFFER)
+      let serialized = SimpleSerialize(testClass,
+         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.ARRAY_BUFFER)
       let deserialized =
          SimpleDeserialize(serialized, TestClass, SerializedType.ARRAY_BUFFER) as TestClass
       expect(deserialized.testFunction()).toBe('hello|world')
+   })
+
+   it('deserialize SimpleTestClassNested from ArrayBuffer', () => {
+      let testClass = new SimpleTestClassNested(new SimpleNestedTestClass('hello world'))
+      let serialized = SimpleSerialize(testClass,
+         [DeSerializeParameter.WITH_FUNCTIONS], SerializedType.ARRAY_BUFFER)
+      let deserialized =
+         SimpleDeserialize(serialized, SimpleTestClassNested, SerializedType.ARRAY_BUFFER) as SimpleTestClassNested
+      expect(deserialized['nestedTestClass']['field']).toBe('hello world')
+      expect(deserialized.getField()).toBe('hello world')
    })
 })

@@ -1,6 +1,6 @@
 {
    "name": "@esentri/de-serializer",
-   "version": "0.3.3",
+   "version": "0.4.0",
    "description": "",
    "keywords": [],
    "main": "dist/de-serializer.umd.js",
@@ -34,8 +34,7 @@
       "report-coverage": "cat ./coverage/lcov.info | coveralls",
       "commit": "git-cz",
       "semantic-release": "semantic-release",
-      "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-      "publish": "yarn run build && yarn run test && npm publish"
+      "semantic-release-prepare": "ts-node tools/semantic-release-prepare"
    },
    "config": {
       "commitizen": {
@@ -50,6 +49,7 @@
       "transform": {
          ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
       },
+      "setupFiles": [],
       "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
       "moduleFileExtensions": [
          "ts",

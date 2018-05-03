@@ -1,6 +1,7 @@
 import {Deserializer, SimpleDeserializer} from '../src/Deserializer'
 import {SimpleSerialize} from '../src/Serialize'
 import {SerializedType} from '../src/SerializedType'
+import DeSerializeParameter from '../src/DeSerializeParameter'
 
 class NestedTestClass {
    private test: string = 'defaultNested'
@@ -43,13 +44,15 @@ class ObjectWithDeserialize {
 describe('deserializer test', () => {
 
    it('with simple object', () => {
-      let serialized = SimpleSerialize(new TestClass('test', 'nested'))
+      let serialized = SimpleSerialize(new TestClass('test', 'nested'),
+         [DeSerializeParameter.WITHOUT_FUNCTIONS])
       let deserialized = Deserializer.simple(TestClass).deserialize(serialized) as TestClass
       expect(deserialized.testFunction()).toEqual('test|nested')
    })
 
    it('with object with deserialize', () => {
-      let serialized = SimpleSerialize(new ObjectWithDeserialize('testValue'))
+      let serialized = SimpleSerialize(new ObjectWithDeserialize('testValue'),
+         [DeSerializeParameter.WITHOUT_FUNCTIONS])
       let deserialized = Deserializer.simple(ObjectWithDeserialize)
          .deserialize(serialized) as ObjectWithDeserialize
       expect(deserialized.value).toEqual('overwritten')
@@ -57,7 +60,7 @@ describe('deserializer test', () => {
 
    it('from string with simple object', () => {
       let serialized = SimpleSerialize(new TestClass('test', 'nested'),
-         SerializedType.STRING)
+         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
       let deserialized = Deserializer.simple(TestClass, SerializedType.STRING)
          .deserialize(serialized) as TestClass
       expect(deserialized.testFunction()).toEqual('test|nested')
@@ -65,7 +68,7 @@ describe('deserializer test', () => {
 
    it('from string with object with deserialize', () => {
       let serialized = SimpleSerialize(new ObjectWithDeserialize('testValue'),
-         SerializedType.STRING)
+         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
       let deserialized = Deserializer.simple(ObjectWithDeserialize, SerializedType.STRING)
          .deserialize(serialized) as ObjectWithDeserialize
       expect(deserialized.value).toEqual('overwritten')
@@ -73,7 +76,7 @@ describe('deserializer test', () => {
 
    it('with default SimpleDeserializer', () => {
       let serialized = SimpleSerialize(new ObjectWithDeserialize('testValue'),
-         SerializedType.STRING)
+         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
       let deserialized = new SimpleDeserializer(ObjectWithDeserialize)
          .deserialize(serialized) as ObjectWithDeserialize
       expect(deserialized.value).toEqual('overwritten')
