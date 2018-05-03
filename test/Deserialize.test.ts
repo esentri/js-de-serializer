@@ -105,4 +105,12 @@ describe('deserialize test', () => {
       expect(deserialized).toEqual(num)
    })
 
+   it('deserialize simple string from ArrayBuffer', () => {
+      const helloWorldString = 'hello world'
+      const serialized = SimpleSerialize(helloWorldString,
+         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.ARRAY_BUFFER)
+      const deserialized = SimpleDeserialize(serialized, {}, SerializedType.ARRAY_BUFFER)
+      expect(deserialized).toEqual(helloWorldString)
+   })
+
 })

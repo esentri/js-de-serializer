@@ -11,7 +11,7 @@ export const SimpleDeserialize: Deserialize<any> =
     Class: any,
     serializedType: SerializedType<any> = SerializedType.DATA_STRUCTURE): any => {
       dataStructure = serializedType.toDataStructure(dataStructure)
-      if (Class !== undefined && Class['deserialize']) return Class.deserialize(dataStructure)
+      if (Class && Class['deserialize']) return Class.deserialize(dataStructure)
       if (isPrimitive(dataStructure)) return dataStructure
       let deserialized = new Class()
       Object.keys(dataStructure).forEach(property => {
