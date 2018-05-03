@@ -1,4 +1,5 @@
 import {arrayBufferToString, stringToArrayBuffer} from './transformer/ArrayBufferString'
+import {isPrimitive} from 'util'
 
 export class SerializedType<TYPE> {
    public static readonly DATA_STRUCTURE: SerializedType<object> =
@@ -12,8 +13,17 @@ export class SerializedType<TYPE> {
          (obj: string) => JSON.parse(obj))
    public static readonly ARRAY_BUFFER: SerializedType<ArrayBuffer> =
       new SerializedType('array_buffer',
-      (dataStructure: any) => stringToArrayBuffer(JSON.stringify(dataStructure)),
-         (obj: ArrayBuffer) => JSON.parse(arrayBufferToString(obj)))
+         (dataStructure: any) => {
+            if (typeof dataStructure === 'string') return stringToArrayBuffer(dataStructure)
+            return stringToArrayBuffer(JSON.stringify(dataStructure))
+         }, (obj: ArrayBuffer) => {
+         const stringObj = arrayBufferToString(obj)
+            try {
+               return JSON.parse(stringObj)
+            } catch (error) {
+               return stringObj
+            }
+         })
 
    public readonly finalSerialize: (dataStructure: object) => TYPE
    public readonly toDataStructure: (obj: TYPE) => any

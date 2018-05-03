@@ -89,9 +89,10 @@ describe('serialize test', () => {
    it('string to ArrayBuffer', () => {
       const testString = 'hello world'
       const serialized = SimpleSerialize(testString,
-         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.ARRAY_BUFFER)
+         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.ARRAY_BUFFER) as ArrayBuffer
       expect(typeof serialized).not.toBe('string')
       expect(typeof serialized).not.toBe('String')
+      expect(serialized.byteLength).toBe(11)
    })
 
 })
