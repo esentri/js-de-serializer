@@ -1,6 +1,6 @@
 import {isPrimitive} from 'util'
 import {SerializedType} from './SerializedType'
-import DeSerializeParameter from './DeSerializeParameter'
+import {DeSerializeParameter} from './DeSerializeParameter'
 import {MethodStringToFunctionString} from './transformer/MethodFunctionString'
 
 export interface Serialize {

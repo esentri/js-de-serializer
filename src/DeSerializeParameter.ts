@@ -1,4 +1,4 @@
-export default class DeSerializeParameter {
+export class DeSerializeParameter {
 
    public static readonly WITH_FUNCTIONS = new DeSerializeParameter('with_functions')
    public static readonly WITHOUT_FUNCTIONS = new DeSerializeParameter('without_functions')

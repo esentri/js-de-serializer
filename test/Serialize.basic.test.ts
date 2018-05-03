@@ -1,7 +1,7 @@
 import {SimpleSerialize} from '../src/Serialize'
 import {Serializable} from '../src/Serializable'
 import {SerializedType} from '../src/SerializedType'
-import DeSerializeParameter from '../src/DeSerializeParameter'
+import {DeSerializeParameter} from '../src/DeSerializeParameter'
 
 class TestClass {
    private a: string

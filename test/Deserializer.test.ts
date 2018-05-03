@@ -1,7 +1,7 @@
 import {Deserializer, SimpleDeserializer} from '../src/Deserializer'
 import {SimpleSerialize} from '../src/Serialize'
 import {SerializedType} from '../src/SerializedType'
-import DeSerializeParameter from '../src/DeSerializeParameter'
+import {DeSerializeParameter} from '../src/DeSerializeParameter'
 
 class NestedTestClass {
    private test: string = 'defaultNested'

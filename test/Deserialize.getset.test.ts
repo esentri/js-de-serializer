@@ -1,8 +1,8 @@
 import { SimpleDeserialize } from '../src/Deserialize'
 import { SimpleSerialize } from '../src/Serialize'
-import TestClassWithGet from './testClasses/TestClassWithGet';
-import TestClassWithSet from './testClasses/TestClassWithSet';
-import TestClassWithGetSet from './testClasses/TestClassWithGetSet';
+import TestClassWithGet from './testClasses/TestClassWithGet'
+import TestClassWithSet from './testClasses/TestClassWithSet'
+import TestClassWithGetSet from './testClasses/TestClassWithGetSet'
 
 describe('deserialize test with get/set', () => {
    it('with get', () => {
