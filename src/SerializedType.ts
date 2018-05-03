@@ -17,7 +17,7 @@ export class SerializedType<TYPE> {
             if (typeof dataStructure === 'string') return stringToArrayBuffer(dataStructure)
             return stringToArrayBuffer(JSON.stringify(dataStructure))
          }, (obj: ArrayBuffer) => {
-         const stringObj = arrayBufferToString(obj)
+            const stringObj = arrayBufferToString(obj)
             try {
                return JSON.parse(stringObj)
             } catch (error) {
