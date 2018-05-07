@@ -7,7 +7,7 @@ export abstract class Deserializer<TYPE> {
       return new SimpleDeserializer(prototype, serializedType)
    }
 
-   public abstract deserialize (dataStructure: any): TYPE
+   public abstract deserialize (dataStructure: any): Promise<TYPE>
 }
 
 export class SimpleDeserializer implements Deserializer<any> {
@@ -20,7 +20,7 @@ export class SimpleDeserializer implements Deserializer<any> {
       this.serializedType = serializedType
    }
 
-   deserialize (dataStructure: any): any {
+   deserialize (dataStructure: any): Promise<any> {
       return SimpleDeserialize(dataStructure, this.prototype, this.serializedType)
    }
 }

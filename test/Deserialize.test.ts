@@ -37,80 +37,111 @@ class ObjectWithDeserialize {
       this.value = value
    }
 
-   static deserialize (dataStructure: any) {
-      return new ObjectWithDeserialize('overwritten')
+   static deserialize (dataStructure: any): Promise<ObjectWithDeserialize> {
+      return new Promise(resolve => resolve(new ObjectWithDeserialize('overwritten')))
    }
 }
 
 describe('deserialize test', () => {
-   it('with simple object', () => {
-      let serialized = SimpleSerialize(new TestClass('test', 'nested'),
+   it('with simple object', done => {
+      SimpleSerialize(new TestClass('test', 'nested'),
          [DeSerializeParameter.WITHOUT_FUNCTIONS])
-      let deserialized = SimpleDeserialize(serialized, TestClass) as TestClass
-      expect(deserialized.testFunction()).toEqual('test|nested')
+         .then(serialized => {
+            SimpleDeserialize(serialized, TestClass).then(deserialized => {
+               expect(deserialized.testFunction()).toEqual('test|nested')
+               done()
+            })
+         })
    })
 
-   it('with object with deserialize', () => {
-      let serialized = SimpleSerialize(new ObjectWithDeserialize('testValue'),
+   it('with object with deserialize', done => {
+      SimpleSerialize(new ObjectWithDeserialize('testValue'),
          [DeSerializeParameter.WITHOUT_FUNCTIONS])
-      let deserialized = SimpleDeserialize(
-         serialized,
-         ObjectWithDeserialize
-      ) as ObjectWithDeserialize
-      expect(deserialized.value).toEqual('overwritten')
+         .then(serialized => {
+            SimpleDeserialize(serialized, ObjectWithDeserialize).then(deserialized => {
+               expect(deserialized.value).toEqual('overwritten')
+               done()
+            })
+         })
    })
 
-   it('deserialize simple object from string', () => {
+   it('deserialize simple object from string', done => {
       let testClass = new TestClass('hello', 'world')
-      let serialized = SimpleSerialize(testClass,
+      SimpleSerialize(testClass,
          [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
-      let deserialized =
-         SimpleDeserialize(serialized, TestClass, SerializedType.STRING) as TestClass
-      expect(deserialized.testFunction()).toBe('hello|world')
+         .then(serialized => {
+            SimpleDeserialize(serialized, TestClass, SerializedType.STRING)
+               .then(deserialized => {
+                  expect(deserialized.testFunction()).toBe('hello|world')
+                  done()
+               })
+         })
    })
 
-   it('deserialize object with deserialize from string', () => {
+   it('deserialize object with deserialize from string', done => {
       let testObject = new ObjectWithDeserialize('hello')
-      let serialized = SimpleSerialize(testObject,
+      SimpleSerialize(testObject,
          [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
-      let deserialized = SimpleDeserialize(serialized,
-         ObjectWithDeserialize, SerializedType.STRING) as ObjectWithDeserialize
-      expect(deserialized.value).toBe('overwritten')
+         .then(serialized => {
+            SimpleDeserialize(serialized, ObjectWithDeserialize, SerializedType.STRING)
+               .then(deserialized => {
+                  expect(deserialized.value).toBe('overwritten')
+                  done()
+               })
+         })
    })
 
-   it('deserialize simple object from ArrayBuffer', () => {
+   it('deserialize simple object from ArrayBuffer', done => {
       let testClass = new TestClass('hello', 'world')
-      let serialized = SimpleSerialize(testClass,
+      SimpleSerialize(testClass,
          [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.ARRAY_BUFFER)
-      let deserialized =
-         SimpleDeserialize(serialized, TestClass, SerializedType.ARRAY_BUFFER) as TestClass
-      expect(deserialized.testFunction()).toBe('hello|world')
+         .then(serialized => {
+            SimpleDeserialize(serialized, TestClass, SerializedType.ARRAY_BUFFER)
+               .then(deserialized => {
+                  expect(deserialized.testFunction()).toBe('hello|world')
+                  done()
+               })
+         })
    })
 
-   it('deserialize SimpleTestClassNested from ArrayBuffer', () => {
+   it('deserialize SimpleTestClassNested from ArrayBuffer', done => {
       let testClass = new SimpleTestClassNested(new SimpleNestedTestClass('hello world'))
-      let serialized = SimpleSerialize(testClass,
+      SimpleSerialize(testClass,
          [DeSerializeParameter.WITH_FUNCTIONS], SerializedType.ARRAY_BUFFER)
-      let deserialized =
-         SimpleDeserialize(serialized, SimpleTestClassNested, SerializedType.ARRAY_BUFFER) as SimpleTestClassNested
-      expect(deserialized['nestedTestClass']['field']).toBe('hello world')
-      expect(deserialized.getField()).toBe('hello world')
+         .then(serialized => {
+            SimpleDeserialize(serialized, SimpleTestClassNested, SerializedType.ARRAY_BUFFER)
+               .then(deserialized => {
+                  expect(deserialized['nestedTestClass']['field']).toBe('hello world')
+                  expect(deserialized.getField()).toBe('hello world')
+                  done()
+               })
+         })
    })
 
-   it('deserialize number from ArrayBuffer', () => {
+   it('deserialize number from ArrayBuffer', done => {
       const num = 12345678
-      const serialized = SimpleSerialize(num, [DeSerializeParameter.WITHOUT_FUNCTIONS],
+      SimpleSerialize(num, [DeSerializeParameter.WITHOUT_FUNCTIONS],
          SerializedType.ARRAY_BUFFER)
-      const deserialized = SimpleDeserialize(serialized, {}, SerializedType.ARRAY_BUFFER)
-      expect(deserialized).toEqual(num)
+         .then(serialized => {
+            SimpleDeserialize(serialized, {}, SerializedType.ARRAY_BUFFER)
+               .then(deserialized => {
+                  expect(deserialized).toEqual(num)
+                  done()
+               })
+         })
    })
 
-   it('deserialize simple string from ArrayBuffer', () => {
+   it('deserialize simple string from ArrayBuffer', done => {
       const helloWorldString = 'hello world'
-      const serialized = SimpleSerialize(helloWorldString,
+      SimpleSerialize(helloWorldString,
          [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.ARRAY_BUFFER)
-      const deserialized = SimpleDeserialize(serialized, {}, SerializedType.ARRAY_BUFFER)
-      expect(deserialized).toEqual(helloWorldString)
+         .then(serialized => {
+            SimpleDeserialize(serialized, {}, SerializedType.ARRAY_BUFFER)
+               .then(deserialized => {
+                  expect(deserialized).toEqual(helloWorldString)
+                  done()
+               })
+         })
    })
 
 })

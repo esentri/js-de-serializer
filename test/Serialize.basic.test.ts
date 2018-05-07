@@ -36,8 +36,10 @@ class TestClassWithSerialize implements Serializable {
       this.a = a
    }
 
-   serialize (): any {
-      return {a: 'custom serialize'}
+   serialize (): Promise<any> {
+      return new Promise<any>((resolve, reject) => {
+         resolve({a: 'custom serialize'})
+      })
    }
 
 }
@@ -54,45 +56,60 @@ class TestClassWithNestedCustomSerialize {
 }
 
 describe('serialize test', () => {
-   it('with simple object', () => {
-      let serialized = SimpleSerialize(new TestClass('first', new NestedClass('nested')))
-      expect(serialized.a).toEqual('first')
-      expect(serialized.b.c).toEqual('nested')
+   it('with simple object', done => {
+      SimpleSerialize(new TestClass('first', new NestedClass('nested'))).then(serialized => {
+         expect(serialized.a).toEqual('first')
+         expect(serialized.b.c).toEqual('nested')
+         done()
+      })
    })
 
-   it('with serialize function', () => {
-      let serialized = SimpleSerialize(new TestClassWithSerialize('test'))
-      expect(serialized.a).toEqual('custom serialize')
+   it('with serialize function', done => {
+      SimpleSerialize(new TestClassWithSerialize('test')).then(serialized => {
+         expect(serialized.a).toEqual('custom serialize')
+         done()
+      })
    })
 
-   it('with nested serialize function', () => {
-      let serialized = SimpleSerialize(new TestClassWithNestedCustomSerialize('first',
+   it('with nested serialize function', done => {
+      SimpleSerialize(new TestClassWithNestedCustomSerialize('first',
          new TestClassWithSerialize('will be overwritten')))
-      expect(serialized.a).toEqual('first')
-      expect(serialized.nestedClass.a).toEqual('custom serialize')
+         .then(serialized => {
+            expect(serialized.a).toEqual('first')
+            expect(serialized.nestedClass.a).toEqual('custom serialize')
+            done()
+         })
    })
 
-   it('test with simple string', () => {
+   it('test with simple string', done => {
       let stringForSerialization = 'hello world'
-      let serialized = SimpleSerialize(stringForSerialization)
-      expect(serialized).toEqual(stringForSerialization)
+      SimpleSerialize(stringForSerialization).then(serialized => {
+         expect(serialized).toEqual(stringForSerialization)
+         done()
+      })
    })
 
-   it('serialize object to data structure string', () => {
+   it('serialize object to data structure string', done => {
       const testClass = new TestClass('hello', new NestedClass('world'))
-      const serialized = SimpleSerialize(testClass,
+      SimpleSerialize(testClass,
          [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
-      expect(typeof serialized).toEqual('string')
-      expect(serialized).toEqual(JSON.stringify(testClass))
+         .then(serialized => {
+            expect(typeof serialized).toEqual('string')
+            expect(serialized).toEqual(JSON.stringify(testClass))
+            done()
+         })
    })
 
-   it('string to ArrayBuffer', () => {
+   it('string to ArrayBuffer', done => {
       const testString = 'hello world'
-      const serialized = SimpleSerialize(testString,
-         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.ARRAY_BUFFER) as ArrayBuffer
-      expect(typeof serialized).not.toBe('string')
-      expect(typeof serialized).not.toBe('String')
-      expect(serialized.byteLength).toBe(11)
+      SimpleSerialize(testString,
+         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.ARRAY_BUFFER)
+         .then(serialized => {
+            expect(typeof serialized).not.toBe('string')
+            expect(typeof serialized).not.toBe('String')
+            expect(serialized.byteLength).toBe(11)
+            done()
+         })
    })
 
 })

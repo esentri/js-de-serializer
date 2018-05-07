@@ -38,7 +38,9 @@ npm install @esentri/de-serializer
 import {SimpleSerialize} from '@esentri/de-serializer'
 
 let myObject = new MyObject()
-let dataStructure = SimpleSerialize(myObject)
+SimpleSerialize(myObject).then(serialized => {
+   // do stuff
+})
 ```
 * _myObject_ is the object you want to serialize
 
@@ -50,7 +52,9 @@ let dataStructure = SimpleSerialize(myObject)
 import {SimpleSerialize, SerializedType} from '@esentri/de-serializer'
 
 let myObject = new MyObject()
-let string = SimpleSerialize(myObject, SerializedType.STRING)
+SimpleSerialize(myObject, SerializedType.STRING).then(serialized => {
+  // do stuff
+})
 ```
 * _myObject_ is the object you want to serialize
 
@@ -62,7 +66,9 @@ let string = SimpleSerialize(myObject, SerializedType.STRING)
 import {SimpleDeserialize} from '@esentri/de-serializer'
 
 let myDataStructure = { field1: 'test' }
-let obj = SimpleDeserialize(myDataStructure, MyObject)
+SimpleDeserialize(myDataStructure, MyObject).then(deserialized => {
+  // do stuff
+})
 ```
 * _myDataStructure_ is the data structure for deserializing
 * _MyObject_ is the class you want to create
@@ -72,7 +78,9 @@ let obj = SimpleDeserialize(myDataStructure, MyObject)
 import {Deserializer} from '@esentri/de-serializer'
 
 let myDeserializer = Deserializer.simple(MyObject)
-let myObject = myDeserializer.deserialize(myDataStructure)
+myDeserializer.deserialize(myDataStructure).then(deserialized => {
+  // do stuff
+})
 ```
 * _myDataStructure_ is the data structure for deserializing
 * _MyObject_ is the class you want to create
@@ -85,7 +93,9 @@ let myObject = myDeserializer.deserialize(myDataStructure)
 import {SimpleDeserialize, SerializedType} from '@esentri/de-serializer'
 
 let myString = "{ field1: 'test' }"
-let obj = SimpleDeserialize(myString, MyObject, SerializedType.STRING)
+SimpleDeserialize(myString, MyObject, SerializedType.STRING).then(deserialized => {
+  // do stuff
+})
 ```
 * _myString_ is the string for deserializing
 * _MyObject_ is the class you want to create
@@ -95,7 +105,9 @@ let obj = SimpleDeserialize(myString, MyObject, SerializedType.STRING)
 import {Deserializer, SerializedType} from '@esentri/de-serializer'
 
 let myDeserializer = Deserializer.simple(MyObject, SerializedType.STRING)
-let myObject = myDeserializer.deserialize(myString)
+myDeserializer.deserialize(myString).then(deserialized => {
+  // do stuff
+})
 ```
 * _myString_ is the data structure for deserializing
 * _MyObject_ is the class you want to create
@@ -120,12 +132,16 @@ class MyClass {
    }
    
    serialize() {
-      return { fieldA: 'overwritten during serialization' }
+      return new Promise(resolve => 
+         resolve({ fieldA: 'overwritten during serialization' })
+      )
    }
 }
 
 let myObject = new MyClass('Hello world')
-let myDataStrucutre = SimpleSerialize(myObject)
+SimpleSerialize(myObject).then(serialized => {
+   // do stuff
+})
 ```
 * the data structure will look like this `{ fieldA: 'overwritten during serialization' }`
 
@@ -143,12 +159,16 @@ class MyClass {
    }
    
    static deserialize(dataStructure) {
-      return new MyClass(dataStructure.fieldA + ' some stuff')
+      return new Promise(resolve => {
+         resolve(new MyClass(dataStructure.fieldA + ' some stuff'))
+      })
    }
 }
 
 let myDataStructure = { fieldA: 'hello' }
-let myObject = SimpleDeserialize(myDataStructure, MyClass)
+SimpleDeserialize(myDataStructure, MyClass).then(deserialized => {
+   // do stuff
+})
 ```
 * _myObject_ will look like this: `{ fieldA: 'hello some stuff' }`
 
