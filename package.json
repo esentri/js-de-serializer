@@ -1,6 +1,6 @@
 {
    "name": "@esentri/de-serializer",
-   "version": "0.7.0",
+   "version": "0.7.1",
    "description": "",
    "keywords": [],
    "main": "dist/de-serializer.umd.js",
