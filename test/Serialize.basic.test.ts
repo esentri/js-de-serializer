@@ -112,4 +112,12 @@ describe('serialize test', () => {
          })
    })
 
+   it('Uint8Array to ArrayBuffer', done => {
+      const uintArray = new Uint8Array([12, 13, 14])
+      SimpleSerialize(uintArray, [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.ARRAY_BUFFER).then(serialized => {
+         expect(new Uint8Array(serialized)).toEqual(uintArray)
+         done()
+      })
+   })
+
 })

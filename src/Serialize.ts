@@ -26,6 +26,22 @@ function addSerializedMethods (element: any, serialized: any) {
    })
 }
 
+export function isTypedArray (element: any): boolean {
+   switch (element.constructor) {
+      case Int8Array:
+      case Uint8Array:
+      case Uint8ClampedArray:
+      case Int16Array:
+      case Uint16Array:
+      case Int32Array:
+      case Uint32Array:
+      case Float32Array:
+      case Float64Array:
+         return true
+   }
+   return false
+}
+
 export const SimpleSerialize: Serialize =
    (element: any,
     parameters: Array<DeSerializeParameter> = [DeSerializeParameter.WITH_FUNCTIONS],
@@ -36,7 +52,7 @@ export const SimpleSerialize: Serialize =
                .then((serialized: any) => resolve(serializedType.finalSerialize(serialized)))
             return
          }
-         if (isPrimitive(element)) {
+         if (isPrimitive(element) || isTypedArray(element)) {
             resolve(serializedType.finalSerialize(element))
             return
          }

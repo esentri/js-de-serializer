@@ -3,7 +3,7 @@ import {SerializedType} from './SerializedType'
 import {FunctionFromString} from './transformer/MethodFunctionString'
 
 export interface Deserialize<T> {
-   (dataStructure: any, Class: T, serializedType?: SerializedType<any>): Promise<T>
+   (dataStructure: any, Class?: T, serializedType?: SerializedType<any>): Promise<T>
 }
 
 export const SimpleDeserialize: Deserialize<any> =

@@ -1,4 +1,5 @@
 import {StringToArrayBuffer, ArrayBufferToString} from '@esentri/transformer-functions'
+import {isTypedArray} from './Serialize'
 
 export class SerializedType<TYPE> {
    public static readonly DATA_STRUCTURE: SerializedType<object> =
@@ -14,6 +15,7 @@ export class SerializedType<TYPE> {
       new SerializedType('array_buffer',
          (dataStructure: any) => {
             if (typeof dataStructure === 'string') return StringToArrayBuffer(dataStructure)
+            if (isTypedArray(dataStructure)) return dataStructure.buffer
             return StringToArrayBuffer(JSON.stringify(dataStructure))
          }, (obj: ArrayBuffer) => {
             const stringObj = ArrayBufferToString(obj)
