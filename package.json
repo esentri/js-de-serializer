@@ -102,6 +102,6 @@
       "validate-commit-msg": "^2.12.2"
    },
    "dependencies": {
-      "@esentri/transformer-functions": "^0.1.0"
+      "@esentri/transformer-functions": "^0.3.1"
    }
 }

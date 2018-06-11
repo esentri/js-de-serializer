@@ -1,10 +1,8 @@
-import {SerializedType} from './SerializedType'
 import {SimpleDeserialize} from './Deserialize'
 
 export abstract class Deserializer<TYPE> {
-   public static simple<T> (prototype: any,
-                            serializedType: SerializedType<any> = SerializedType.DATA_STRUCTURE): Deserializer<T> {
-      return new SimpleDeserializer(prototype, serializedType)
+   public static simple<T> (prototype: any): Deserializer<T> {
+      return new SimpleDeserializer(prototype)
    }
 
    public abstract deserialize (dataStructure: any): Promise<TYPE>
@@ -13,14 +11,12 @@ export abstract class Deserializer<TYPE> {
 export class SimpleDeserializer implements Deserializer<any> {
 
    private readonly prototype: any
-   private readonly serializedType: SerializedType<any>
 
-   constructor (prototype: any, serializedType: SerializedType<any> = SerializedType.DATA_STRUCTURE) {
+   constructor (prototype: any) {
       this.prototype = prototype
-      this.serializedType = serializedType
    }
 
    deserialize (dataStructure: any): Promise<any> {
-      return SimpleDeserialize(dataStructure, this.prototype, this.serializedType)
+      return SimpleDeserialize(dataStructure, this.prototype)
    }
 }
