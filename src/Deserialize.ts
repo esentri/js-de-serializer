@@ -3,14 +3,13 @@ import {SerializedType} from './SerializedType'
 import {FunctionFromString} from './transformer/MethodFunctionString'
 
 export interface Deserialize<T> {
-   (dataStructure: any, Class: T, serializedType?: SerializedType<any>): Promise<T>
+   (dataStructure: any, Class?: T): Promise<T>
 }
 
 export const SimpleDeserialize: Deserialize<any> =
-   (dataStructure: any,
-    Class: any,
-    serializedType: SerializedType<any> = SerializedType.DATA_STRUCTURE): Promise<any> => {
-      dataStructure = serializedType.toDataStructure(dataStructure)
+   (serialized: any,
+    Class: any): Promise<any> => {
+      const dataStructure = SerializedType.toDataStructure(serialized)
       if (Class && Class['deserialize']) return Class.deserialize(dataStructure)
       return new Promise((resolve, reject) => {
          if (isPrimitive(dataStructure)) {

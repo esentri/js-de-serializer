@@ -1,19 +1,39 @@
+import {SerializedType} from './de-serializer'
+
 export class DeSerializeParameter {
 
-   public static readonly WITH_FUNCTIONS = new DeSerializeParameter('with_functions')
-   public static readonly WITHOUT_FUNCTIONS = new DeSerializeParameter('without_functions')
+   public serializedType: SerializedType<any>
+   public withFunctions: boolean
 
-   private readonly value: string
-
-   constructor (value: string) {
-      this.value = value
+   constructor (serializedType: SerializedType<any> = SerializedType.DATA_STRUCTURE,
+                withFunctions: boolean = true) {
+      this.serializedType = serializedType
+      this.withFunctions = withFunctions
    }
 
-   public static listContains (parameters: Array<DeSerializeParameter>,
-                               parameter: DeSerializeParameter) {
-      for (let index = 0; index < parameters.length; index++) {
-         if (parameters[index].value === parameter.value) return true
-      }
-      return false
+   public clone (): DeSerializeParameter {
+      const parameters = new DeSerializeParameter()
+      Object.assign(parameters, this)
+      return parameters
+   }
+
+}
+
+export class DeSerializeParameterBuilder {
+   private _serializedType: SerializedType<any> = SerializedType.DATA_STRUCTURE
+   private _withFunctions: boolean = true
+
+   public serializedType (value: SerializedType<any>): DeSerializeParameterBuilder {
+      this._serializedType = value
+      return this
+   }
+
+   public withFunctions (value: boolean): DeSerializeParameterBuilder {
+      this._withFunctions = value
+      return this
+   }
+
+   public build (): DeSerializeParameter {
+      return new DeSerializeParameter(this._serializedType, this._withFunctions)
    }
 }
