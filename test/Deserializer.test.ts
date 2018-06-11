@@ -1,7 +1,6 @@
 import {Deserializer, SimpleDeserializer} from '../src/Deserializer'
 import {SimpleSerialize} from '../src/Serialize'
 import {SerializedType} from '../src/SerializedType'
-import {DeSerializeParameter} from '../src/DeSerializeParameter'
 
 class NestedTestClass {
    private test: string = 'defaultNested'
@@ -46,7 +45,7 @@ describe('deserializer test', () => {
 
    it('with simple object', done => {
       SimpleSerialize(new TestClass('test', 'nested'),
-         [DeSerializeParameter.WITHOUT_FUNCTIONS])
+         {withFunctions: false})
          .then(serialized => {
             Deserializer.simple<TestClass>(TestClass).deserialize(serialized)
                .then((deserialized: TestClass) => {
@@ -58,7 +57,7 @@ describe('deserializer test', () => {
 
    it('with object with deserialize', done => {
       SimpleSerialize(new ObjectWithDeserialize('testValue'),
-         [DeSerializeParameter.WITHOUT_FUNCTIONS])
+         {withFunctions: false})
          .then(serialized => {
             Deserializer.simple<ObjectWithDeserialize>(ObjectWithDeserialize)
                .deserialize(serialized)
@@ -71,9 +70,9 @@ describe('deserializer test', () => {
 
    it('from string with simple object', done => {
       SimpleSerialize(new TestClass('test', 'nested'),
-         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
+         {withFunctions: false, output: SerializedType.STRING})
          .then(serialized => {
-            Deserializer.simple<TestClass>(TestClass, SerializedType.STRING)
+            Deserializer.simple<TestClass>(TestClass)
                .deserialize(serialized)
                .then(deserialized => {
                   expect(deserialized.testFunction()).toEqual('test|nested')
@@ -84,9 +83,9 @@ describe('deserializer test', () => {
 
    it('from string with object with deserialize', done => {
       SimpleSerialize(new ObjectWithDeserialize('testValue'),
-         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
+         {withFunctions: false, output: SerializedType.STRING})
          .then(serialized => {
-            Deserializer.simple<ObjectWithDeserialize>(ObjectWithDeserialize, SerializedType.STRING)
+            Deserializer.simple<ObjectWithDeserialize>(ObjectWithDeserialize)
                .deserialize(serialized)
                .then(deserialized => {
                   expect(deserialized.value).toEqual('overwritten')
@@ -97,7 +96,7 @@ describe('deserializer test', () => {
 
    it('with default SimpleDeserializer', done => {
       SimpleSerialize(new ObjectWithDeserialize('testValue'),
-         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
+         {withFunctions: false, output: SerializedType.STRING})
          .then(serialized => {
             new SimpleDeserializer(ObjectWithDeserialize).deserialize(serialized)
                .then(deserialized => {

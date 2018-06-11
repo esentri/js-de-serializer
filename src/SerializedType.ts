@@ -25,6 +25,16 @@ export class SerializedType<TYPE> {
                return stringObj
             }
          })
+   public static toDataStructure(obj: any) {
+      if (obj instanceof ArrayBuffer) {
+         return this.ARRAY_BUFFER.toDataStructure(obj)
+      }
+      if (typeof obj === 'string') {
+         return this.STRING.toDataStructure(obj)
+      }
+      console.log('DATA_STRUCTURE', obj)
+      return this.DATA_STRUCTURE.toDataStructure(obj)
+   }
 
    public readonly finalSerialize: (dataStructure: object) => TYPE
    public readonly toDataStructure: (obj: TYPE) => any

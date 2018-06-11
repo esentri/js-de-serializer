@@ -7,12 +7,12 @@ class TestClass {
    private a: string
    private b: NestedClass
 
-   constructor (a: string, b: NestedClass) {
+   constructor(a: string, b: NestedClass) {
       this.a = a
       this.b = b
    }
 
-   public nested (): string {
+   public nested(): string {
       return this.b.value()
    }
 }
@@ -20,11 +20,11 @@ class TestClass {
 class NestedClass {
    private readonly c: string
 
-   constructor (c: string) {
+   constructor(c: string) {
       this.c = c
    }
 
-   public value (): string {
+   public value(): string {
       return this.c
    }
 }
@@ -32,11 +32,11 @@ class NestedClass {
 class TestClassWithSerialize implements Serializable {
    private a: string
 
-   constructor (a: string) {
+   constructor(a: string) {
       this.a = a
    }
 
-   serialize (): Promise<any> {
+   serialize(): Promise<any> {
       return new Promise<any>((resolve, reject) => {
          resolve({a: 'custom serialize'})
       })
@@ -48,7 +48,7 @@ class TestClassWithNestedCustomSerialize {
    private a: string
    private nestedClass: TestClassWithSerialize
 
-   constructor (a: string, b: TestClassWithSerialize) {
+   constructor(a: string, b: TestClassWithSerialize) {
       this.a = a
       this.nestedClass = b
    }
@@ -89,10 +89,34 @@ describe('serialize test', () => {
       })
    })
 
+   it('test with simple number', done => {
+      let numberForSerialization = 13
+      SimpleSerialize(numberForSerialization).then(serialized => {
+         expect(serialized).toEqual(numberForSerialization)
+         done()
+      })
+   })
+
+   it('test with simple UInt8Array', done => {
+      let uint8Array = new Uint8Array([46, 83, 91])
+      SimpleSerialize(uint8Array).then(serialized => {
+         expect(serialized).toEqual(uint8Array)
+         done()
+      })
+   })
+
+   it('test with simple Int8Array', done => {
+      let int8Array = new Int8Array([15, 1, 22])
+      SimpleSerialize(int8Array).then(serialized => {
+         expect(serialized).toEqual(int8Array)
+         done()
+      })
+   })
+
    it('serialize object to data structure string', done => {
       const testClass = new TestClass('hello', new NestedClass('world'))
       SimpleSerialize(testClass,
-         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.STRING)
+         {withFunctions: false, output: SerializedType.STRING})
          .then(serialized => {
             expect(typeof serialized).toEqual('string')
             expect(serialized).toEqual(JSON.stringify(testClass))
@@ -103,7 +127,7 @@ describe('serialize test', () => {
    it('string to ArrayBuffer', done => {
       const testString = 'hello world'
       SimpleSerialize(testString,
-         [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.ARRAY_BUFFER)
+         {withFunctions: false, output: SerializedType.ARRAY_BUFFER})
          .then(serialized => {
             expect(typeof serialized).not.toBe('string')
             expect(typeof serialized).not.toBe('String')
@@ -114,7 +138,7 @@ describe('serialize test', () => {
 
    it('Uint8Array to ArrayBuffer', done => {
       const uintArray = new Uint8Array([12, 13, 14])
-      SimpleSerialize(uintArray, [DeSerializeParameter.WITHOUT_FUNCTIONS], SerializedType.ARRAY_BUFFER).then(serialized => {
+      SimpleSerialize(uintArray, {withFunctions: false, output: SerializedType.ARRAY_BUFFER}).then(serialized => {
          expect(new Uint8Array(serialized)).toEqual(uintArray)
          done()
       })

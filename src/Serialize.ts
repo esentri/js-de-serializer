@@ -1,15 +1,14 @@
 import {isPrimitive} from 'util'
-import {SerializedType} from './SerializedType'
 import {DeSerializeParameter} from './DeSerializeParameter'
 import {MethodStringToFunctionString} from './transformer/MethodFunctionString'
+import {SerializedType} from "./SerializedType";
 
 export interface Serialize {
    (element: any,
-    parameters?: Array<DeSerializeParameter>,
-    serializedType?: SerializedType<any>): Promise<any>
+    parameters?: object): Promise<any>
 }
 
-function addSerializedMethods (element: any, serialized: any) {
+function addSerializedMethods(element: any, serialized: any) {
    const methodNames: Array<string> = []
    Object.getOwnPropertyNames(Object.getPrototypeOf(element)).forEach(property => {
       if (typeof element[property] === 'function' && property !== 'constructor') {
@@ -26,7 +25,7 @@ function addSerializedMethods (element: any, serialized: any) {
    })
 }
 
-export function isTypedArray (element: any): boolean {
+export function isTypedArray(element: any): boolean {
    switch (element.constructor) {
       case Int8Array:
       case Uint8Array:
@@ -44,31 +43,34 @@ export function isTypedArray (element: any): boolean {
 
 export const SimpleSerialize: Serialize =
    (element: any,
-    parameters: Array<DeSerializeParameter> = [DeSerializeParameter.WITH_FUNCTIONS],
-    serializedType: SerializedType<any> = SerializedType.DATA_STRUCTURE): Promise<any> => {
+    parameters: object = new DeSerializeParameter()): Promise<any> => {
       return new Promise((resolve, reject) => {
+         let deSerializeParameters = DeSerializeParameter.fromDataStructure(parameters)
          if (element['serialize']) {
             element.serialize()
-               .then((serialized: any) => resolve(serializedType.finalSerialize(serialized)))
+               .then((serialized: any) => resolve(deSerializeParameters.output.finalSerialize(serialized)))
             return
          }
          if (isPrimitive(element) || isTypedArray(element)) {
-            resolve(serializedType.finalSerialize(element))
+            resolve(deSerializeParameters.output.finalSerialize(element))
             return
          }
          let propertyPromises: Array<Promise<any>> = []
          let serialized: any = {}
          Object.keys(element).forEach(property => {
-            let promise = SimpleSerialize(element[property], parameters).then(serializedProperty => {
+            let propertyParameters = new DeSerializeParameter()
+            Object.assign(propertyParameters, deSerializeParameters)
+            propertyParameters.output = SerializedType.DATA_STRUCTURE
+            let promise = SimpleSerialize(element[property], propertyParameters).then(serializedProperty => {
                serialized[property] = serializedProperty
             })
             propertyPromises.push(promise)
          })
          Promise.all(propertyPromises).then(_ => {
-            if (DeSerializeParameter.listContains(parameters, DeSerializeParameter.WITH_FUNCTIONS)) {
+            if (deSerializeParameters.withFunctions) {
                addSerializedMethods(element, serialized)
             }
-            resolve(serializedType.finalSerialize(serialized))
+            resolve(deSerializeParameters.output.finalSerialize(serialized))
          })
       })
    }
