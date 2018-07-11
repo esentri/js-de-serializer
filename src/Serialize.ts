@@ -2,6 +2,7 @@ import {isPrimitive} from 'util'
 import {DeSerializeParameter} from './DeSerializeParameter'
 import {MethodStringToFunctionString} from './transformer/MethodFunctionString'
 import {SerializedType} from './SerializedType'
+import {ArrayBufferToString} from "@esentri/transformer-functions";
 
 export interface Serialize {
    (element: any,
@@ -55,7 +56,7 @@ export const SimpleSerialize: Serialize =
             return
          }
          if (element instanceof ArrayBuffer) {
-            resolve({__arrayBuffer__: element})
+            resolve(parameters.serializedType.finalSerialize({__arrayBuffer__: ArrayBufferToString(element)}))
             return
          }
          let propertyPromises: Array<Promise<any>> = []
