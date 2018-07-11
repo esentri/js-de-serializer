@@ -7,6 +7,8 @@ import {
    ParametersDataStructureWithoutFunction,
    ParametersStringWithoutFunction
 } from './Parameters'
+import {ArrayBufferEqual} from './helper/ArrayBufferFunctions'
+import fs from 'fs'
 
 class NestedTestClass {
    private test: string = 'defaultNested'
@@ -160,6 +162,17 @@ describe('deserialize test', () => {
       SimpleSerialize(helloWorld, ParametersBase64WithoutFunctions).then(serialized => {
          SimpleDeserialize(serialized).then(deserialized => {
             expect(deserialized).toEqual(helloWorld)
+            done()
+         })
+      })
+   })
+
+   it('deserialize ArrayBuffer from ArrayBuffer', done => {
+      let file = fs.readFileSync(__dirname + '/testData/text.txt')
+      let arrayBuffer = new Uint8Array(file).buffer
+      SimpleSerialize(arrayBuffer, ParametersArrayBufferWithoutFunction).then(serialized => {
+         SimpleDeserialize(serialized, ArrayBuffer).then(deserialized => {
+            expect(ArrayBufferEqual(arrayBuffer, deserialized)).toBeTruthy()
             done()
          })
       })

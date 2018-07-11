@@ -54,6 +54,10 @@ export const SimpleSerialize: Serialize =
             resolve(parameters.serializedType.finalSerialize(element))
             return
          }
+         if (element instanceof ArrayBuffer) {
+            resolve({__arrayBuffer__: element})
+            return
+         }
          let propertyPromises: Array<Promise<any>> = []
          let serialized: any = {}
          Object.keys(element).forEach(property => {

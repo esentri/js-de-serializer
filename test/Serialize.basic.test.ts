@@ -2,6 +2,8 @@ import {SimpleSerialize} from '../src/Serialize'
 import {Serializable} from '../src/Serializable'
 import {ParametersArrayBufferWithoutFunction, ParametersBase64WithoutFunctions, ParametersStringWithoutFunction} from './Parameters'
 import {DeSerializeParameterBuilder} from '../src/DeSerializeParameter'
+import {ArrayBufferEqual} from './helper/ArrayBufferFunctions'
+import fs from 'fs'
 
 class TestClass {
    private a: string
@@ -132,6 +134,15 @@ describe('serialize test', () => {
             expect(serialized.byteLength).toBe(11)
             done()
          })
+   })
+
+   it('ArrayBuffer to ArrayBuffer', done => {
+      let file = fs.readFileSync(__dirname + '/testData/text.txt')
+      let arrayBuffer = new Uint8Array(file).buffer
+      SimpleSerialize(arrayBuffer, ParametersArrayBufferWithoutFunction).then(serialized => {
+         expect(ArrayBufferEqual(serialized['__arrayBuffer__'], arrayBuffer)).toBeTruthy()
+         done()
+      })
    })
 
    it('Uint8Array to ArrayBuffer', done => {

@@ -16,6 +16,10 @@ export const SimpleDeserialize: Deserialize<any> =
             resolve(dataStructure)
             return
          }
+         if (Object.keys(dataStructure).includes('__arrayBuffer__')) {
+            resolve(dataStructure['__arrayBuffer__'])
+            return
+         }
          let deserialized = new Class()
          let propertyPromises: Array<Promise<any>> = []
          Object.keys(dataStructure).forEach(property => {
