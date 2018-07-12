@@ -169,7 +169,7 @@ describe('deserialize test', () => {
 
    it('deserialize ArrayBuffer from ArrayBuffer', done => {
       let file = fs.readFileSync(__dirname + '/testData/text.txt')
-      let arrayBuffer = new Uint8Array(file).buffer
+      let arrayBuffer = new Int8Array(file).buffer
       SimpleSerialize(arrayBuffer, ParametersArrayBufferWithoutFunction).then(serialized => {
          SimpleDeserialize(serialized, ArrayBuffer).then(deserialized => {
             expect(ArrayBufferEqual(arrayBuffer, deserialized)).toBeTruthy()

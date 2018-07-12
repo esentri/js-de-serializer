@@ -1,6 +1,6 @@
 {
    "name": "@esentri/de-serializer",
-   "version": "0.9.4",
+   "version": "0.9.5",
    "description": "",
    "keywords": [],
    "main": "dist/de-serializer.umd.js",
@@ -102,6 +102,6 @@
       "validate-commit-msg": "^2.12.2"
    },
    "dependencies": {
-      "@esentri/transformer-functions": "^0.3.2"
+      "@esentri/transformer-functions": "^0.3.4"
    }
 }
