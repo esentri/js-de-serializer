@@ -16,7 +16,7 @@ describe('method string / lambda string transformation', () => {
 
    const simpleMethodString = simpleClass.simpleMethod.toString()
    const lineBreakMethodString = simpleClass.methodWithLineBreak.toString()
-   const expectedSimpleMethodWithoutName = '() {return "hello world";}'
+   const expectedSimpleMethodWithoutName = '() { return "hello world"; }'
    const expectedLineBreakMethodWithoutName = '() {\n' +
          '            return \"hello world\";\n        }'
 
@@ -28,7 +28,7 @@ describe('method string / lambda string transformation', () => {
    it('split simple method parameters and body', () => {
       const parts = SplitMethodParametersAndBody(expectedSimpleMethodWithoutName)
       expect(parts[0]).toEqual('()')
-      expect(parts[1]).toEqual('{return "hello world";}')
+      expect(parts[1]).toEqual('{ return "hello world"; }')
    })
 
    it('remove name from method with line break', () => {
@@ -44,7 +44,7 @@ describe('method string / lambda string transformation', () => {
 
    it('method string to lambda string', () => {
       const lambdaString = MethodStringToLambdaString(simpleMethodString)
-      expect(lambdaString).toEqual('() => {return "hello world";}')
+      expect(lambdaString).toEqual('() => { return "hello world"; }')
    })
 
    it('line break method string to lambda string', ()=> {

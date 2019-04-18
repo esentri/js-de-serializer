@@ -1,5 +1,4 @@
-import {DeSerializeParameter, DeSerializeParameterBuilder} from '../src/DeSerializeParameter'
-import {SerializedType} from '../src/SerializedType'
+import {DeSerializeParameter, DeSerializeParameterBuilder, SerializedType} from '../src/de-serializer'
 
 export const ParametersDataStructureWithoutFunction: DeSerializeParameter = new DeSerializeParameterBuilder()
    .serializedType(SerializedType.DATA_STRUCTURE)

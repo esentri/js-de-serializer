@@ -1,6 +1,4 @@
-import {Deserializer, SimpleDeserializer} from '../src/Deserializer'
-import {SimpleSerialize} from '../src/Serialize'
-import {SerializedType} from '../src/SerializedType'
+import {Deserializer, SimpleDeserializer, SimpleSerialize} from '../src/de-serializer'
 import {ParametersDataStructureWithoutFunction, ParametersStringWithoutFunction} from './Parameters'
 
 class NestedTestClass {

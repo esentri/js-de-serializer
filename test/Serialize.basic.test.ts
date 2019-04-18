@@ -1,10 +1,5 @@
-import {SimpleSerialize} from '../src/Serialize'
-import {Serializable} from '../src/Serializable'
+import {SimpleSerialize, Serializable} from '../src/de-serializer'
 import {ParametersArrayBufferWithoutFunction, ParametersBase64WithoutFunctions, ParametersStringWithoutFunction} from './Parameters'
-import {DeSerializeParameterBuilder} from '../src/DeSerializeParameter'
-import {ArrayBufferEqual} from './helper/ArrayBufferFunctions'
-import fs from 'fs'
-import {StringToArrayBuffer} from "@esentri/transformer-functions";
 
 class TestClass {
    private a: string

@@ -1,5 +1,4 @@
-import {SimpleDeserialize} from '../src/Deserialize'
-import {SimpleSerialize} from '../src/Serialize'
+import {SimpleDeserialize, SimpleSerialize} from '../src/de-serializer'
 import TestClassWithGet from './testClasses/TestClassWithGet'
 import TestClassWithSet from './testClasses/TestClassWithSet'
 import TestClassWithGetSet from './testClasses/TestClassWithGetSet'

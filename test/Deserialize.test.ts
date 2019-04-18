@@ -1,5 +1,4 @@
-import {SimpleDeserialize} from '../src/Deserialize'
-import {SimpleSerialize} from '../src/Serialize'
+import {SimpleDeserialize, SimpleSerialize} from '../src/de-serializer'
 import {SimpleNestedTestClass, SimpleTestClassNested} from './testClasses/SimpleTestClassNested'
 import {
    ParametersArrayBufferWithFunction,
@@ -8,7 +7,7 @@ import {
    ParametersStringWithoutFunction
 } from './Parameters'
 import {ArrayBufferEqual} from './helper/ArrayBufferFunctions'
-import fs from 'fs'
+import * as fs from 'fs'
 
 class NestedTestClass {
    private test: string = 'defaultNested'
