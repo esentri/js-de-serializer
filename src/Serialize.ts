@@ -2,7 +2,7 @@ import {isPrimitive} from 'util'
 import {DeSerializeParameter} from './DeSerializeParameter'
 import {MethodStringToFunctionString} from './transformer/MethodFunctionString'
 import {SerializedType} from './SerializedType'
-import {ArrayBufferToString} from "@esentri/transformer-functions";
+import {ArrayBufferWithBinaryDataToBase64} from '@esentri/transformer-functions'
 
 export interface Serialize {
    (element: any,
@@ -56,7 +56,7 @@ export const SimpleSerialize: Serialize =
             return
          }
          if (element instanceof ArrayBuffer) {
-            resolve(parameters.serializedType.finalSerialize({__arrayBuffer__: ArrayBufferToString(element)}))
+            resolve(parameters.serializedType.finalSerialize({__arrayBuffer__: ArrayBufferWithBinaryDataToBase64(element)}))
             return
          }
          let propertyPromises: Array<Promise<any>> = []

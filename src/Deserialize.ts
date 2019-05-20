@@ -1,7 +1,7 @@
 import {isPrimitive} from 'util'
 import {SerializedType} from './SerializedType'
 import {FunctionFromString} from './transformer/MethodFunctionString'
-import {StringToArrayBuffer} from "@esentri/transformer-functions";
+import {Base64WithBinaryDataToArrayBuffer} from '@esentri/transformer-functions'
 
 export interface Deserialize<T> {
    (dataStructure: any, Class?: T): Promise<T>
@@ -18,7 +18,7 @@ export const SimpleDeserialize: Deserialize<any> =
             return
          }
          if (Object.keys(dataStructure).includes('__arrayBuffer__')) {
-            resolve(StringToArrayBuffer(dataStructure['__arrayBuffer__']))
+            resolve(Base64WithBinaryDataToArrayBuffer(dataStructure['__arrayBuffer__']))
             return
          }
          let deserialized = new Class()
